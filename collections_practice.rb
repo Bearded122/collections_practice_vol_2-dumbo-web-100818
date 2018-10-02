@@ -1,72 +1,53 @@
-require 'pry'
-
-def sort_array_asc(array)
-  array.sort
-end
-
-def sort_array_desc(array)
-  array.sort do | left, right|
-    right <=> left
+def begins_with_r(array)
+  array.all? do |word|
+    word.downcase.chr == "r"
   end
 end
 
-def sort_array_char_count(array)
-  array.sort do |left, right|
-    left.length <=> right.length
-  end
+def contain_a (array)
+  array.select {|element| element.include?("a")}
 end
 
-def swap_elements(array)
-  array[1], array[2] = array[2], array[1]
-  array
+def first_wa(array)
+  array.find {|word| word.to_s.start_with?("wa")}
 end
 
-def reverse_array(array)
-  array.reverse
+def remove_non_strings(array)
+  array.reject {|element| element.class != String}
 end
 
-def kesha_maker(array)
-  array.each do |item|
-    item[2] = "$"
-  end
+
+def count_elements(array)
+  counts = Hash.new(0)
+  array.collect {|element| counts[element]+=1 }
+    counts.collect do |hash, number|
+      hash[:count] = number
+    end
+  counts.keys
 end
 
-def find_a(array)
-  array.find_all do |word|
-    word[0] == "a"
-  end
-
-  # using select method
-    # array.select do |word|
-    #   word[0] == "a"
-    # end
-end
-
-def sum_array(array)
-  sum = 0
-  array.each do |num|
-    sum+=num
-  end
-  sum
-
-  # using reduce method
-    # array.reduce(:+)
-
-  # using inject method (short)
-     # array.inject(:+)
-
-  # using inject method (long)
-     # array.inject do |sum,x|
-     #  sum + x
-     # end
-end
-
-def add_s(array)
-  array.collect do |word|
-    if array[1] == word
-      word
-    else
-      word + "s"
+def merge_data(keys, data)
+  keys.each do |name_hash|
+    data.each do |hash|
+      name_hash.merge!(hash[name_hash[:first_name]])
     end
   end
+end
+
+def find_cool(array)
+  array.select {|entry| entry if entry.has_value?("cool")}
+end
+
+def organize_schools(schools)
+  by_location = {}
+    schools.each do |school, location_hash|
+      location_hash.each do |symbol, location|
+        if by_location[location] == nil
+          by_location[location] = [school]
+        else
+          by_location[location] << school
+        end
+      end
+    end
+    by_location
 end
